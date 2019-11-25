@@ -1,0 +1,12 @@
+FROM fedora
+MAINTAINER Oscar Rubio Garcia 
+WORKDIR /code
+
+RUN dnf -y update && dnf clean all
+RUN dnf -y install python-pip && dnf clean all
+
+ADD requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+ADD . .
+
+CMD [ "gunicorn", "-b", "0.0.0.0:5000", "app:api", "--reload" ]
